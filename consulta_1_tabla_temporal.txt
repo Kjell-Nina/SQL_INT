@@ -1,0 +1,20 @@
+--Si hacemos un breve análisis de la tabla titles , podemos ver que un empleado puede tener
+un aumento (o baja) de puesto ( title ). Definamos este aumento (o baja) como cambio . Crea
+una lista con los nombres de los departamentos y el total de cambios que sus colaboradores
+ha tenido ordenados de mayor a menor. ¿Qué departamento ha tenido menos cambios?
+
+WITH t_cambios AS (
+	SELECT de.emp_no,
+		de.dept_no,
+		COUNT(tl.title) AS pers_cambio
+	FROM public.dept_emp de
+	JOIN public.titles tl ON (de.emp_no=tl.emp_no)
+	GROUP BY de.emp_no, de.dept_no
+)
+
+SELECT d.dept_name,
+		SUM (t.pers_cambio) AS cambios
+FROM t_cambios t
+JOIN public.departments d ON (d.dept_no=t.dept_no)
+GROUP BY d.dept_name
+ORDER BY cambios

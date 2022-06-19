@@ -1,0 +1,16 @@
+--¿Cuáles son los 5 gerentes (managers) de departamentos que han tenido los 
+mejores sueldos? Enlista nombre, apellido, y mejor sueldo SIN REPETIDOS. 
+¿puedes obtener el mismo resultado utilizando tablas  temporales y subqueries?
+SELECT e.first_name,
+		e.last_name,
+		t.salary
+FROM	
+(	SELECT dm.emp_no,
+			MAX(s.salary) AS salary
+	FROM public.dept_manager dm
+	JOIN public.salaries s ON (s.emp_no=dm.emp_no)
+	GROUP BY dm.emp_no
+) t
+JOIN public.employees e ON (e.emp_no=t.emp_no)
+ORDER BY t.salary DESC
+LIMIT 5

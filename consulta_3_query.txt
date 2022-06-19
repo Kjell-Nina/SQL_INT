@@ -1,0 +1,14 @@
+SELECT 
+     ROUND(AVG(te.to_date-te.from_date)) AS avg_eng
+FROM 
+(   SELECT *
+    FROM public.titles t
+    WHERE t.title ='Engineer'  
+) te
+JOIN 
+(   SELECT tt.emp_no,
+            tt.title
+    FROM public.titles tt
+    WHERE tt.title ='Senior Engineer'
+) ts 
+ON (te.emp_no=ts.emp_no)

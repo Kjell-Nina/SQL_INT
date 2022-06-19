@@ -1,0 +1,20 @@
+--¿Cuántos días en promedio trabaja un colaborador en el puesto Engineer antes de ser
+ascendido a Senior Engineer ? Asegurate que la fecha de inicio como Senior Engineer sea
+mayor o igual a la finalización como Engineer, redondea el promedio, número a un entero.
+
+WITH t_eng AS(
+        SELECT *
+        FROM public.titles t
+        WHERE t.title ='Engineer'  
+    ),
+    t_sr_eng AS(
+        SELECT tt.emp_no,
+                tt.title
+        FROM public.titles tt
+        WHERE tt.title ='Senior Engineer'
+    )
+
+SELECT 
+     ROUND(AVG(te.to_date-te.from_date)) AS avg_eng
+FROM t_eng te
+JOIN t_sr_eng ts ON (te.emp_no=ts.emp_no)
